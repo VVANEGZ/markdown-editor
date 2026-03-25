@@ -1,0 +1,22 @@
+{
+  "name": "markdown-editor",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "set DEBUG=true & electron .",
+    "build:dir": "electron-builder --windows --dir",
+    "build:win": "electron-builder --windows"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^41.0.3",
+    "electron-builder": "^26.8.1"
+  },
+  "dependencies": {
+    "simplemde": "^1.11.2"
+  }
+}

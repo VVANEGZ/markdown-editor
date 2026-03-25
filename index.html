@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name = "viewport" content="width= device-width,
+        initial-scale=1.0" />
+        <meta
+        http-equiv="Content-Security-Policy"
+        content="script-src 'self' 'unsafe-inline';"/>
+        <link rel="stylesheet" href="./node_modules/simplemde/dist/simplemde.min.css">
+        <script src="./node_modules/simplemde/dist/simplemde.min.js"></script>
+        <title>Document</title>
+        
+    </head>
+    <body>
+        <textarea id="editor"></textarea>
+        <script>
+            var editor= new SimpleMDE({
+                element: document.getElementById('editor')
+            });
+        </script>
+        <script>
+            const {ipcRenderer}= require('electron');
+            ipcRenderer.on('editor-event', (event, arg)=>{
+                console.log(arg);
+                event.sender.send('editor-reply', `Received ${arg}`);
+
+                if(arg=== 'toggle-bold'){
+                    editor.toggleBold();
+                } else if(arg=== 'toggle-italic'){
+                    editor.toggleItalic();
+                }else if(arg==='toggle-strikethrough'){
+                    editor.toggleStrikethrough();
+                }
+            });
+            ipcRenderer.on('load-content', (event, content)=>{
+                editor.value(content);
+            });
+            ipcRenderer.on('get-content', (event)=>{
+                const content = editor.value();
+                event.sender.send('save-content', content);
+            });
+            ipcRenderer.send('editor-reply', 'Page Loaded');
+        </script>
+        <style>
+            html, body{
+                height: 100%;
+                display: flex;
+                flex: 1;
+                flex-direction: column;
+            }
+            .CodeMirror{
+                flex: 1;
+            }
+        </style>
+     
+    </body>
+</html>
